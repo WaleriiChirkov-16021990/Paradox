@@ -1,6 +1,7 @@
 package org.example;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -8,6 +9,7 @@ public class Paradox {
 
     private final List<Integer> arr = new LinkedList<>(Arrays.asList(1, 2, 3));
     private final int countGames;
+    private final HashMap<String, Integer> result = new HashMap<>();
 
     public Paradox(int countGames) {
         this.countGames = countGames;
@@ -15,10 +17,9 @@ public class Paradox {
 
     public void getStatisticsParadoxIfDoNotChangeChoice() {
         if (this.countGames > 0) {
-
             int game = 0;
-            int looser = 0;
-            int winner = 0;
+            this.result.put("winner", 0);
+            this.result.put("looser", 0);
             while (game < this.countGames) {
                 List<Integer> secondArr = new LinkedList<>();
                 secondArr.addAll(this.arr);
@@ -32,14 +33,14 @@ public class Paradox {
                 }
                 secondArr.remove(removeIndex);
                 if (wonIndex == userIndex) {
-                    winner++;
+                    this.result.put("winner", this.result.get("winner") + 1);
                 } else {
-                    looser++;
+                    this.result.put("looser", this.result.get("looser") + 1);
                 }
                 game++;
             }
             System.out.println("Do not change choices");
-            System.out.println("Winner: " + String.valueOf(winner / (this.countGames / 100)) +  " % Looser : " + String.valueOf(looser / (this.countGames / 100)) + " %");
+            System.out.println("Winner: " + String.valueOf(this.result.get("winner") / (this.countGames / 100)) + " % Looser : " + String.valueOf(this.result.get("looser") / (this.countGames / 100)) + " %");
         } else {
             throw new IllegalArgumentException("Invalid game count. Game count must be more 0");
         }
@@ -49,10 +50,9 @@ public class Paradox {
 
     public void getStatisticsParadoxIfChangeChoice() {
         if (this.countGames > 0) {
-
             int game = 0;
-            int looser = 0;
-            int winner = 0;
+            this.result.put("winner", 0);
+            this.result.put("looser", 0);
             while (game < this.countGames) {
                 List<Integer> secondArr = new LinkedList<>();
                 secondArr.addAll(this.arr);
@@ -67,24 +67,35 @@ public class Paradox {
                     }
                 }
                 secondArr.remove(removeIndex);
-
-                for (int door:
-                     secondArr) {
+                for (int door :
+                        secondArr) {
                     if (door != userChoice) {
                         userChoice = door;
                     }
                 }
                 if (winChoice == userChoice) {
-                    winner++;
+                    this.result.put("winner", this.result.get("winner") + 1);
                 } else {
-                    looser++;
+                    this.result.put("looser", this.result.get("looser") + 1);
                 }
                 game++;
             }
             System.out.println("\n If change choices");
-            System.out.println("Winner: " + String.valueOf(winner / (this.countGames / 100)) + " % Looser : " + String.valueOf(looser / (this.countGames / 100)) + " %");
+            System.out.println("Winner: " + String.valueOf(this.result.get("winner") / (this.countGames / 100)) + " % Looser : " + String.valueOf(this.result.get("looser") / (this.countGames / 100)) + " %");
         } else {
             throw new IllegalArgumentException("Invalid game count. Game count must be more 0");
         }
+    }
+
+    public List<Integer> getArr() {
+        return arr;
+    }
+
+    public int getCountGames() {
+        return countGames;
+    }
+
+    public HashMap<String, Integer> getResult() {
+        return result;
     }
 }
